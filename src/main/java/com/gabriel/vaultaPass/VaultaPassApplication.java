@@ -1,13 +1,13 @@
-package com.gabriel.vaulta;
+package com.gabriel.vaultaPass;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class VaultaApplication {
+public class VaultaPassApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(VaultaApplication.class, args);
+		SpringApplication.run(VaultaPassApplication.class, args);
 	}
 
 }
