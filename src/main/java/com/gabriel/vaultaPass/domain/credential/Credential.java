@@ -112,6 +112,6 @@ public class Credential {
     public String getEmail() { return this.email; }
     public String getLink() { return this.link; }
     public String getDescription() { return this.description; }
-    public LocalDateTime getCreateAt() { return this.createdAt; }
+    public LocalDateTime getCreatedAt() { return this.createdAt; }
 
 }
