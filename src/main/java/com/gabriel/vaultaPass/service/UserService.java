@@ -6,6 +6,7 @@ import com.gabriel.vaultaPass.domain.user.PasswordEncoder;
 import com.gabriel.vaultaPass.domain.user.User;
 import com.gabriel.vaultaPass.domain.user.UserRepository;
 import com.gabriel.vaultaPass.exception.AlreadyExistsException;
+import com.gabriel.vaultaPass.exception.ExceptionMessageEnum;
 
 @Service 
 public class UserService {
@@ -23,14 +24,18 @@ public class UserService {
         String lastname,
         String username,
         String email,
-        String password
+        String rawPassword
     ) {
         if(userRepository.existsByEmail(email)) {
-            throw new AlreadyExistsException("E-mail already in use, please provide another one.");
+            throw new AlreadyExistsException(ExceptionMessageEnum.EMAIL_ALREADY_IN_USE.getMessage());
         }
         if(userRepository.existsByUsername(username)) {
-            throw new AlreadyExistsException("Username already in use, please provide another one.");
+            throw new AlreadyExistsException(ExceptionMessageEnum.USERNAME_ALREADY_IN_USE.getMessage());
         }
+
+        String encodedPassword = passwordEncoder.encode(rawPassword);
+        User user = new User(name, lastname, username, email, encodedPassword, null);
+        return userRepository.save(user);
     }
 
 }
