@@ -3,6 +3,8 @@ package com.gabriel.vaultaPass.domain.user;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import com.gabriel.vaultaPass.exception.ExceptionMessageEnum;
+
 public class User {
 
     private final String id;
@@ -61,37 +63,37 @@ public class User {
 
     private void validateName(String name) {
         if(name == null || name.isBlank()) {
-            throw new IllegalArgumentException("The name is mandatory.");
+            throw new IllegalArgumentException(ExceptionMessageEnum.NAME_IS_REQUIRED.getMessage());
         }
     }
 
     private void validateLastname(String lastname) {
         if(lastname == null || lastname.isBlank()) {
-            throw new IllegalArgumentException("The lastname is mandatory.");
+            throw new IllegalArgumentException(ExceptionMessageEnum.LASTNAME_IS_REQUIRED.getMessage());
         }
     }
 
     private void validateUsername(String username) {
         if(username == null || username.isBlank()) {
-            throw new IllegalArgumentException("The username is mandatory.");
+            throw new IllegalArgumentException(ExceptionMessageEnum.USERNAME_IS_REQUIRED.getMessage());
         }
     }
 
     private void validateEmail(String email) {
         if(email == null || !email.contains("@")) {
-            throw new IllegalArgumentException("The email address provided is invalid; please try another one.");
+            throw new IllegalArgumentException(ExceptionMessageEnum.INVALID_EMAIL.getMessage());
         }
     }
 
     private void validatePassword(String password) {
         if(password == null || password.isBlank()) {
-            throw new IllegalArgumentException("The password is mandatory.");
+            throw new IllegalArgumentException(ExceptionMessageEnum.PASSWORD_IS_REQUIRED.getMessage());
         }
     }
 
     private void validateProfilePhotoUrl(String profilePhotoUrl) {
         if(profilePhotoUrl != null && !isValidUrl(profilePhotoUrl)) {
-            throw new IllegalArgumentException("Invalid profile photo url");
+            throw new IllegalArgumentException(ExceptionMessageEnum.INVALID_URL.getMessage());
         }
     }
 
