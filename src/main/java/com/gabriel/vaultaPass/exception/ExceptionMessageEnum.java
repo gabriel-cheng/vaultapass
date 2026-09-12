@@ -10,6 +10,8 @@ public enum ExceptionMessageEnum {
     LASTNAME_IS_REQUIRED("The lastname is required."),
     USERNAME_IS_REQUIRED("The username is required."),
     INVALID_URL("The URL provided is invalid, please try another one."),
+    EMAIL_ALREADY_IN_USE("E-mail address already in use, please provide another one."),
+    USERNAME_ALREADY_IN_USE("Username already in use, please provide another one."),
     INVALID_EMAIL("The email address provided is invalid, please try another one.");
 
     private final String message;
