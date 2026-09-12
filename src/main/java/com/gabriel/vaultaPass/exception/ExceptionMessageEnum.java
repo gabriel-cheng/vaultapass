@@ -9,9 +9,8 @@ public enum ExceptionMessageEnum {
     NAME_IS_REQUIRED("The name is required."),
     LASTNAME_IS_REQUIRED("The lastname is required."),
     USERNAME_IS_REQUIRED("The username is required."),
-    INVALID_PROFILE_PHOTO_URL("The profile photo url provided is invalid, please try another one."),
-    INVALID_EMAIL("The email address provided is invalid, please try another one."),
-    INVALID_LINK("The platform link provided is invalid, please try another one.");
+    INVALID_URL("The URL provided is invalid, please try another one."),
+    INVALID_EMAIL("The email address provided is invalid, please try another one.");
 
     private final String message;
 
