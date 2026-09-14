@@ -24,8 +24,7 @@ public class Credential {
         String email,
         String password,
         String link,
-        String description,
-        LocalDateTime createdAt
+        String description
     ) {
         validateUserId(userId);
         validatePlatformName(platformName);
