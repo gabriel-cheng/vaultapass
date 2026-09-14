@@ -2,7 +2,10 @@ package com.gabriel.vaultaPass.infra.persistence.credential;
 
 import java.time.LocalDateTime;
 
+import com.gabriel.vaultaPass.infra.persistence.converter.EncryptedFieldConverter;
+
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -21,8 +24,12 @@ public class CredentialEntity {
     @Column(name = "platform_name")
     private String platformName;
 
+    @Convert(converter = EncryptedFieldConverter.class)
     private String login;
+
+    @Convert(converter = EncryptedFieldConverter.class)
     private String password;
+
     private String email;
     private String link;
     private String description;
