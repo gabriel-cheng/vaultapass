@@ -15,7 +15,9 @@ public enum ExceptionMessageEnum {
     INVALID_EMAIL("The email address provided is invalid, please try another one."),
     ERROR_ENCRYPT_ATTRIBUTE("Error encrypting attribute."),
     ERROR_DECRYPT_ATTRIBUTE("Error decrypting attribute."),
-    USER_NOT_FOUND("User not found.");
+    USER_NOT_FOUND("User not found."),
+    CREDENTIAL_NOT_FOUND("Credential not found."),
+    CREDENTIAL_NOT_BELONGS_YOU("The credential does not belong to you.");
 
     private final String message;
 

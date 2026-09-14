@@ -36,4 +36,11 @@ public class GlobalExceptionHandler {
                 .body(ex.getMessage());
     }
 
+    @ExceptionHandler(CredentialNotFoundException.class)
+    public ResponseEntity<String> handleCredentialNotFoundException(CredentialNotFoundException ex) {
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(ex.getMessage());
+    }
+
 }
