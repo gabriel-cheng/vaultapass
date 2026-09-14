@@ -12,7 +12,9 @@ public enum ExceptionMessageEnum {
     INVALID_URL("The URL provided is invalid, please try another one."),
     EMAIL_ALREADY_IN_USE("E-mail address already in use, please provide another one."),
     USERNAME_ALREADY_IN_USE("Username already in use, please provide another one."),
-    INVALID_EMAIL("The email address provided is invalid, please try another one.");
+    INVALID_EMAIL("The email address provided is invalid, please try another one."),
+    ERROR_ENCRYPT_ATTRIBUTE("Error encrypting attribute."),
+    ERROR_DECRYPT_ATTRIBUTE("Error decrypting attribute.");
 
     private final String message;
 
