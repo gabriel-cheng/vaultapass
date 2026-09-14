@@ -65,6 +65,26 @@ public class Credential {
         this.createdAt = createdAt;
     }
 
+    public void updatePassword(String newPassword) {
+        validatePassword(newPassword);
+        this.password = newPassword;
+    }
+
+    public void updateLogin(String newLogin) {
+        validateLogin(newLogin);
+        this.login = newLogin;
+    }
+
+    public void updateLink(String newLink) {
+        validateLink(newLink);
+        this.link = newLink;
+    }
+
+    public void updateEmail(String newEmail) {
+        validateEmail(newEmail);
+        this.email = newEmail;
+    }
+
     private void validateUserId(String userId) {
         if(userId == null || userId.isBlank()) {
             throw new IllegalArgumentException(ExceptionMessageEnum.USER_ID_IS_REQUIRED.getMessage());
