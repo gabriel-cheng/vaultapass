@@ -14,7 +14,8 @@ public enum ExceptionMessageEnum {
     USERNAME_ALREADY_IN_USE("Username already in use, please provide another one."),
     INVALID_EMAIL("The email address provided is invalid, please try another one."),
     ERROR_ENCRYPT_ATTRIBUTE("Error encrypting attribute."),
-    ERROR_DECRYPT_ATTRIBUTE("Error decrypting attribute.");
+    ERROR_DECRYPT_ATTRIBUTE("Error decrypting attribute."),
+    USER_NOT_FOUND("User not found.");
 
     private final String message;
 
