@@ -61,6 +61,21 @@ public class User {
         this.createdAt = createdAt;
     }
 
+    public void updateEmail(String newEmail) {
+        validateEmail(newEmail);
+        this.email = newEmail;
+    }
+
+    public void updatePassword(String newPassword) {
+        validatePassword(newPassword);
+        this.password = newPassword;
+    }
+
+    public void updateProfilePhotoUrl(String newUrl) {
+        validateProfilePhotoUrl(newUrl);
+        this.profilePhotoUrl = newUrl;
+    }
+
     private void validateName(String name) {
         if(name == null || name.isBlank()) {
             throw new IllegalArgumentException(ExceptionMessageEnum.NAME_IS_REQUIRED.getMessage());
