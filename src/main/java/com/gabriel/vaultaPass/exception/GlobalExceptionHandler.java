@@ -16,30 +16,37 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(AlreadyExistsException.class)
-    public ResponseEntity<String> handleAlreadyExistsException(AlreadyExistsException ex) {
+    public ResponseEntity<String> handleAlreadyExists(AlreadyExistsException ex) {
         return ResponseEntity
                 .status(HttpStatus.CONFLICT)
                 .body(ex.getMessage());
     }
 
     @ExceptionHandler(IllegalStateException.class)
-    public ResponseEntity<String> handleIllegalStateException(IllegalStateException ex) {
+    public ResponseEntity<String> handleIllegalState(IllegalStateException ex) {
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(ex.getMessage());
     }
 
     @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<String> handleUserNotFoundException(UserNotFoundException ex) {
+    public ResponseEntity<String> handleUserNotFound(UserNotFoundException ex) {
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
                 .body(ex.getMessage());
     }
 
     @ExceptionHandler(CredentialNotFoundException.class)
-    public ResponseEntity<String> handleCredentialNotFoundException(CredentialNotFoundException ex) {
+    public ResponseEntity<String> handleCredentialNotFound(CredentialNotFoundException ex) {
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
+                .body(ex.getMessage());
+    }
+
+    @ExceptionHandler(CredentialOwnershipException.class)
+    public ResponseEntity<String> handleCredentialOwnership(CredentialOwnershipException ex) {
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
                 .body(ex.getMessage());
     }
 
