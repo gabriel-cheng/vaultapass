@@ -9,7 +9,7 @@ import com.gabriel.vaultaPass.domain.credential.CredentialRepository;
 import com.gabriel.vaultaPass.domain.user.UserRepository;
 import com.gabriel.vaultaPass.exception.CredentialNotFoundException;
 import com.gabriel.vaultaPass.exception.CredentialOwnershipException;
-import com.gabriel.vaultaPass.exception.ExceptionMessageEnum;
+import com.gabriel.vaultaPass.exception.ErrorMessageEnum;
 import com.gabriel.vaultaPass.exception.UserNotFoundException;
 
 @Service
@@ -33,7 +33,7 @@ public class CredentialService {
         String description
     ) {
         userRepository.findById(userId)
-            .orElseThrow(() -> new UserNotFoundException(ExceptionMessageEnum.USER_NOT_FOUND.getMessage()));
+            .orElseThrow(() -> new UserNotFoundException(ErrorMessageEnum.USER_NOT_FOUND.getMessage()));
 
         Credential credential = new Credential(
             userId, platformName, login, password, email, link, description
@@ -47,7 +47,7 @@ public class CredentialService {
 
     public Credential findByIdAndUser(String credentialId, String userId) {
         Credential credential = credentialRepository.findById(credentialId)
-            .orElseThrow(() -> new CredentialNotFoundException(ExceptionMessageEnum.CREDENTIAL_NOT_FOUND.getMessage()));
+            .orElseThrow(() -> new CredentialNotFoundException(ErrorMessageEnum.CREDENTIAL_NOT_FOUND.getMessage()));
             ensureOwnership(credential, userId);
             return credential;
     }
@@ -93,7 +93,7 @@ public class CredentialService {
 
     private void ensureOwnership(Credential credential, String userId) {
         if(!credential.getUserId().equals(userId)) {
-            throw new CredentialOwnershipException(ExceptionMessageEnum.CREDENTIAL_NOT_BELONGS_YOU.getMessage());
+            throw new CredentialOwnershipException(ErrorMessageEnum.CREDENTIAL_DOES_NOT_BELONG_TO_USER.getMessage());
         }
     }
 

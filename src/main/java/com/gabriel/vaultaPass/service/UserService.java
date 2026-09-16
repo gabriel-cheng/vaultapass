@@ -6,7 +6,7 @@ import com.gabriel.vaultaPass.domain.user.PasswordEncoder;
 import com.gabriel.vaultaPass.domain.user.User;
 import com.gabriel.vaultaPass.domain.user.UserRepository;
 import com.gabriel.vaultaPass.exception.AlreadyExistsException;
-import com.gabriel.vaultaPass.exception.ExceptionMessageEnum;
+import com.gabriel.vaultaPass.exception.ErrorMessageEnum;
 import com.gabriel.vaultaPass.exception.UserNotFoundException;
 
 @Service 
@@ -28,10 +28,10 @@ public class UserService {
         String rawPassword
     ) {
         if(userRepository.existsByEmail(email)) {
-            throw new AlreadyExistsException(ExceptionMessageEnum.EMAIL_ALREADY_IN_USE.getMessage());
+            throw new AlreadyExistsException(ErrorMessageEnum.EMAIL_ALREADY_IN_USE.getMessage());
         }
         if(userRepository.existsByUsername(username)) {
-            throw new AlreadyExistsException(ExceptionMessageEnum.USERNAME_ALREADY_IN_USE.getMessage());
+            throw new AlreadyExistsException(ErrorMessageEnum.USERNAME_ALREADY_IN_USE.getMessage());
         }
 
         String encodedPassword = passwordEncoder.encode(rawPassword);
@@ -41,14 +41,14 @@ public class UserService {
 
     public User findById(String userId) {
         return userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException(ExceptionMessageEnum.USER_NOT_FOUND.getMessage()));
+                .orElseThrow(() -> new UserNotFoundException(ErrorMessageEnum.USER_NOT_FOUND.getMessage()));
     }
 
     public User updateEmail(String userId, String newEmail) {
         User user = findById(userId);
 
         if(userRepository.existsByEmail(newEmail)) {
-            throw new AlreadyExistsException(ExceptionMessageEnum.EMAIL_ALREADY_IN_USE.getMessage());
+            throw new AlreadyExistsException(ErrorMessageEnum.EMAIL_ALREADY_IN_USE.getMessage());
         }
 
         user.updateEmail(newEmail);
