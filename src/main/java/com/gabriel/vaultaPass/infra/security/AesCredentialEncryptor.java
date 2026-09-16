@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.gabriel.vaultaPass.domain.credential.CredentialEncryptor;
-import com.gabriel.vaultaPass.exception.ExceptionMessageEnum;
+import com.gabriel.vaultaPass.exception.ErrorMessageEnum;
 
 
 @Component 
@@ -46,7 +46,7 @@ public class AesCredentialEncryptor implements CredentialEncryptor {
 
             return Base64.getEncoder().encodeToString(combined);
         } catch(Exception ex) {
-            throw new IllegalStateException(ExceptionMessageEnum.ERROR_ENCRYPT_ATTRIBUTE.getMessage(), ex);
+            throw new IllegalStateException(ErrorMessageEnum.ENCRYPTION_FAILED.getMessage(), ex);
         }
     }
 
@@ -67,7 +67,7 @@ public class AesCredentialEncryptor implements CredentialEncryptor {
             byte[] decrypted = cipher.doFinal(encrypted);
             return new String(decrypted, StandardCharsets.UTF_8);
         } catch(Exception ex) {
-            throw new IllegalStateException(ExceptionMessageEnum.ERROR_DECRYPT_ATTRIBUTE.getMessage(), ex);
+            throw new IllegalStateException(ErrorMessageEnum.DECRYPTION_FAILED.getMessage(), ex);
         }
     }
 
