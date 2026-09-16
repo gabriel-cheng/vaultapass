@@ -3,7 +3,7 @@ package com.gabriel.vaultaPass.domain.user;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-import com.gabriel.vaultaPass.exception.ExceptionMessageEnum;
+import com.gabriel.vaultaPass.exception.ErrorMessageEnum;
 
 public class User {
 
@@ -78,37 +78,37 @@ public class User {
 
     private void validateName(String name) {
         if(name == null || name.isBlank()) {
-            throw new IllegalArgumentException(ExceptionMessageEnum.NAME_IS_REQUIRED.getMessage());
+            throw new IllegalArgumentException(ErrorMessageEnum.NAME_IS_REQUIRED.getMessage());
         }
     }
 
     private void validateLastname(String lastname) {
         if(lastname == null || lastname.isBlank()) {
-            throw new IllegalArgumentException(ExceptionMessageEnum.LASTNAME_IS_REQUIRED.getMessage());
+            throw new IllegalArgumentException(ErrorMessageEnum.LAST_NAME_IS_REQUIRED.getMessage());
         }
     }
 
     private void validateUsername(String username) {
         if(username == null || username.isBlank()) {
-            throw new IllegalArgumentException(ExceptionMessageEnum.USERNAME_IS_REQUIRED.getMessage());
+            throw new IllegalArgumentException(ErrorMessageEnum.USERNAME_IS_REQUIRED.getMessage());
         }
     }
 
     private void validateEmail(String email) {
         if(email == null || !email.contains("@")) {
-            throw new IllegalArgumentException(ExceptionMessageEnum.INVALID_EMAIL.getMessage());
+            throw new IllegalArgumentException(ErrorMessageEnum.INVALID_EMAIL.getMessage());
         }
     }
 
     private void validatePassword(String password) {
         if(password == null || password.isBlank()) {
-            throw new IllegalArgumentException(ExceptionMessageEnum.PASSWORD_IS_REQUIRED.getMessage());
+            throw new IllegalArgumentException(ErrorMessageEnum.PASSWORD_IS_REQUIRED.getMessage());
         }
     }
 
     private void validateProfilePhotoUrl(String profilePhotoUrl) {
         if(profilePhotoUrl != null && !isValidUrl(profilePhotoUrl)) {
-            throw new IllegalArgumentException(ExceptionMessageEnum.INVALID_URL.getMessage());
+            throw new IllegalArgumentException(ErrorMessageEnum.INVALID_URL.getMessage());
         }
     }
 

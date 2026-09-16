@@ -3,7 +3,7 @@ package com.gabriel.vaultaPass.domain.credential;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-import com.gabriel.vaultaPass.exception.ExceptionMessageEnum;
+import com.gabriel.vaultaPass.exception.ErrorMessageEnum;
 
 public class Credential {
 
@@ -87,37 +87,37 @@ public class Credential {
 
     private void validateUserId(String userId) {
         if(userId == null || userId.isBlank()) {
-            throw new IllegalArgumentException(ExceptionMessageEnum.USER_ID_IS_REQUIRED.getMessage());
+            throw new IllegalArgumentException(ErrorMessageEnum.USER_ID_IS_REQUIRED.getMessage());
         }
     }
 
     private void validatePlatformName(String platformName) {
         if(platformName == null || platformName.isBlank()) {
-            throw new IllegalArgumentException(ExceptionMessageEnum.PLATFORM_NAME_IS_REQUIRED.getMessage());
+            throw new IllegalArgumentException(ErrorMessageEnum.PLATFORM_NAME_IS_REQUIRED.getMessage());
         }
     }
 
     private void validateLogin(String login) {
         if(login == null || login.isBlank()) {
-            throw new IllegalArgumentException(ExceptionMessageEnum.LOGIN_IS_REQUIRED.getMessage());
+            throw new IllegalArgumentException(ErrorMessageEnum.LOGIN_IS_REQUIRED.getMessage());
         }
     }
 
     private void validatePassword(String password) {
         if(password == null || password.isBlank()) {
-            throw new IllegalArgumentException(ExceptionMessageEnum.PASSWORD_IS_REQUIRED.getMessage());
+            throw new IllegalArgumentException(ErrorMessageEnum.PASSWORD_IS_REQUIRED.getMessage());
         }
     }
 
     private void validateEmail(String email) {
         if(email != null && !email.contains("@")) {
-            throw new IllegalArgumentException(ExceptionMessageEnum.INVALID_EMAIL.getMessage());
+            throw new IllegalArgumentException(ErrorMessageEnum.INVALID_EMAIL.getMessage());
         }
     }
 
     private void validateLink(String link) {
         if(link != null && !isValidUrl(link)) {
-            throw new IllegalArgumentException(ExceptionMessageEnum.INVALID_URL.getMessage());
+            throw new IllegalArgumentException(ErrorMessageEnum.INVALID_URL.getMessage());
         }
     }
 
