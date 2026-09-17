@@ -85,6 +85,10 @@ public class Credential {
         this.email = newEmail;
     }
 
+    public void updateDescription(String description) {
+        this.description = description;
+    }
+
     private void validateUserId(String userId) {
         if(userId == null || userId.isBlank()) {
             throw new IllegalArgumentException(ErrorMessageEnum.USER_ID_IS_REQUIRED.getMessage());

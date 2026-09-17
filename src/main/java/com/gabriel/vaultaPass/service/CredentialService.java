@@ -56,33 +56,33 @@ public class CredentialService {
         return findByIdAndUser(credentialId, userId).getPassword();
     }
 
-    public Credential updatePassword(String credentialId, String userId, String newPassword) {
+    public Credential update(
+        String credentialId,
+        String userId,
+        String login,
+        String password,
+        String email,
+        String link,
+        String description
+    ) {
         Credential credential = findByIdAndUser(credentialId, userId);
-        credential.updatePassword(newPassword);
-        return credentialRepository.save(credential);
-    }
 
-    public Credential updateLogin(String credentialId, String userId, String login) {
-        Credential credential = findByIdAndUser(credentialId, userId);
-        credential.updatePassword(login);
-        return credentialRepository.save(credential);
-    }
+        if(login != null) {
+            credential.updateLogin(login);
+        }
+        if(password != null) {
+            credential.updatePassword(password);
+        }
+        if(email != null) {
+            credential.updateEmail(email);
+        }
+        if(link != null) {
+            credential.updateLink(link);
+        }
+        if(description != null) {
+            credential.updateDescription(description);
+        }
 
-    public Credential updateLink(String credentialId, String userId, String link) {
-        Credential credential = findByIdAndUser(credentialId, userId);
-        credential.updatePassword(link);
-        return credentialRepository.save(credential);
-    }
-
-    public Credential updateDescription(String credentialId, String userId, String description) {
-        Credential credential = findByIdAndUser(credentialId, userId);
-        credential.updatePassword(description);
-        return credentialRepository.save(credential);
-    }
-
-    public Credential updateEmail(String credentialId, String userId, String newEmail) {
-        Credential credential = findByIdAndUser(credentialId, userId);
-        credential.updateEmail(newEmail);
         return credentialRepository.save(credential);
     }
 
