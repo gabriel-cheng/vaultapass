@@ -57,4 +57,11 @@ public class GlobalExceptionHandler {
                 .body(ex.getMessage());
     }
 
+    @ExceptionHandler(AuthenticationFailedException.class)
+    public ResponseEntity<String> handleAuthenticationFailed(AuthenticationFailedException ex) {
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .body(ex.getMessage());
+    }
+
 }

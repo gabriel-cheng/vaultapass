@@ -18,7 +18,8 @@ public enum ErrorMessageEnum {
     CREDENTIAL_NOT_FOUND("Credential not found."),
     CREDENTIAL_DOES_NOT_BELONG_TO_USER("The credential does not belong to you."),
     ENCRYPTION_FAILED("An error occurred while encrypting the attribute."),
-    DECRYPTION_FAILED("An error occurred while decrypting the attribute.");
+    DECRYPTION_FAILED("An error occurred while decrypting the attribute."),
+    AUTHENTICATION_FAILED("Authentication failed.");
 
     private final String message;
 
