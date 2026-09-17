@@ -4,9 +4,6 @@ import jakarta.validation.constraints.NotBlank;
 
 public record CredentialRequestDTO(
 
-    @NotBlank(message = "User id is required.")
-    String userId,
-
     @NotBlank(message = "Platform name is required.")
     String platformName,
 

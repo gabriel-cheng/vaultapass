@@ -1,6 +1,6 @@
 package com.gabriel.vaultaPass.dto.request;
 
-public record RequestUpdateCredential(
+public record UpdateCredentialRequestDTO(
     String login,
     String password,
     String email,
