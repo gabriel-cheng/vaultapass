@@ -10,6 +10,7 @@ public enum ErrorMessageEnum {
     USERNAME_ALREADY_IN_USE("Username already in use. Please provide another one."),
     INVALID_EMAIL("The email address provided is invalid. Please try another one."),
     USER_NOT_FOUND("User not found."),
+    USERNAME_NOT_FOUND("Username not found."),
     PLATFORM_NAME_IS_REQUIRED("The platform name is required."),
     LOGIN_IS_REQUIRED("The login is required."),
     PASSWORD_IS_REQUIRED("The password is required."),
