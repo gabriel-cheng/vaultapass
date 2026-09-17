@@ -8,7 +8,11 @@ import com.gabriel.vaultaPass.domain.user.PasswordEncoder;
 @Component
 public class BCryptPasswordEncoderAdapter implements PasswordEncoder {
 
-    private final BCryptPasswordEncoder delegate = new BCryptPasswordEncoder();
+    private final BCryptPasswordEncoder delegate;
+
+    public BCryptPasswordEncoderAdapter(BCryptPasswordEncoder delegate) {
+        this.delegate = delegate;
+    }
 
     @Override
     public String encode(String rawPassword) {
