@@ -44,6 +44,11 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
+    public Optional<User> findByUsername(String username) {
+        return jpaRepository.findByUsername(username).map(UserEntityMapper::toDomain);
+    }
+
+    @Override
     public List<User> findAll() {
         return jpaRepository.findAll().stream().map(UserEntityMapper::toDomain).toList();
     }
