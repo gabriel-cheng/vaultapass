@@ -42,6 +42,7 @@ public class UserEntity {
         this.id = id;
         this.name = name;
         this.lastname = lastname;
+        this.username = username;
         this.email = email;
         this.password = password;
         this.profilePhotoUrl = profilePhotoUrl;
