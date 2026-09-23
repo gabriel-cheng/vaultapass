@@ -14,14 +14,14 @@ public record UserResponseDTO(
     LocalDateTime createdAt
 ) {
 
-    public static UserResponseDTO fromDomain(User user) {
+    public static UserResponseDTO fromDomain(User user, String resolvedPhotoUrl) {
         return new UserResponseDTO(
             user.getId(),
             user.getName(),
             user.getLastname(),
             user.getUsername(),
             user.getEmail(),
-            user.getProfilePhotoUrl(),
+            resolvedPhotoUrl,
             user.getCreatedAt()
         );
     }

@@ -1,7 +1,13 @@
 package com.gabriel.vaultaPass.service;
 
-import org.springframework.stereotype.Service;
+import java.io.IOException;
+import java.time.Duration;
+import java.util.List;
 
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.gabriel.vaultaPass.domain.user.FileStorage;
 import com.gabriel.vaultaPass.domain.user.PasswordEncoder;
 import com.gabriel.vaultaPass.domain.user.User;
 import com.gabriel.vaultaPass.domain.user.UserRepository;
@@ -12,12 +18,17 @@ import com.gabriel.vaultaPass.exception.UserNotFoundException;
 @Service 
 public class UserService {
 
+    private static final List<String> ALLOWED_TYPES = List.of("image/jpeg", "image/jpg", "image/png", "image/webp");
+    private static final long MAX_SIZE_BYTES = 5 * 1024 * 1024;
+
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final FileStorage fileStorage;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, FileStorage fileStorage) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.fileStorage = fileStorage;
     }
 
     public User register(
@@ -61,15 +72,47 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public User updateProfilePhoto(String userId, String newUrl) {
+    public User updateProfilePhoto(String userId, MultipartFile file) {
+        validateFile(file);
+
         User user = findById(userId);
-        user.updateProfilePhotoUrl(newUrl);
-        return userRepository.save(user);
+
+        if(user.getProfilePhotoUrl() != null) {
+            fileStorage.delete(user.getProfilePhotoUrl());
+        }
+
+        try {
+            String objectKey = fileStorage.upload(file.getOriginalFilename(), file.getInputStream(), file.getContentType());
+            user.updateProfilePhotoUrl(objectKey);
+            return userRepository.save(user);
+        } catch(IOException ex) {
+            throw new IllegalStateException(ErrorMessageEnum.FILE_PROCESSING_ERROR.getMessage(), ex);
+        }
     }
 
     public void delete(String userId) {
         User user = findById(userId);
         userRepository.delete(user);
+    }
+
+    private void validateFile(MultipartFile file) {
+        if(file == null || file.isEmpty()) {
+            throw new IllegalArgumentException(ErrorMessageEnum.FILE_IS_REQUIRED.getMessage());
+        }
+        if(!ALLOWED_TYPES.contains(file.getContentType())) {
+            throw new IllegalArgumentException(ErrorMessageEnum.INVALID_FILE_TYPE.getMessage());
+        }
+        if(file.getSize() > MAX_SIZE_BYTES) {
+            throw new IllegalArgumentException(ErrorMessageEnum.FILE_SIZE_EXCEEDED.getMessage());
+        }
+    }
+
+    public String resolveProfilePhotoUrl(User user) {
+        if(user.getProfilePhotoUrl() == null) {
+            return null;
+        }
+
+        return fileStorage.generatePresignedUrl(user.getProfilePhotoUrl(), Duration.ofMinutes(15));
     }
 
 }

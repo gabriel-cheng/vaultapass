@@ -13,7 +13,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 
-@Component 
+@Component
 public class JwtUtil {
 
     private final SecretKey secretKey;
@@ -47,7 +47,7 @@ public class JwtUtil {
         try {
             String username = extractUsername(token);
             return username.equals(userDetails.getUsername()) && !isExpired(token);
-        }catch(Exception e) {
+        } catch(Exception ex) {
             return false;
         }
     }

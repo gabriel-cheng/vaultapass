@@ -1,6 +1,7 @@
 package com.gabriel.vaultaPass.controller;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -9,7 +10,9 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.gabriel.vaultaPass.domain.user.User;
 import com.gabriel.vaultaPass.dto.request.UpdateEmailRequestDTO;
@@ -45,7 +48,7 @@ public class UserController {
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(UserResponseDTO.fromDomain(user));
+                .body(toResponse(user));
     }
 
     @GetMapping("/me")
@@ -55,7 +58,7 @@ public class UserController {
         User user = userService.findById(currentUser.getDomainUser().getId());
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(UserResponseDTO.fromDomain(user));
+                .body(toResponse(user));
     }
 
     @PatchMapping("/me/email")
@@ -66,7 +69,7 @@ public class UserController {
         User updated = userService.updateEmail(currentUser.getDomainUser().getId(), request.email());
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(UserResponseDTO.fromDomain(updated));
+                .body(toResponse(updated));
     }
 
     @PatchMapping("/me/password")
@@ -80,6 +83,17 @@ public class UserController {
                 .build();
     }
 
+    @PatchMapping(value = "/me/profile-photo", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<UserResponseDTO> updateProfilePhoto(
+        @AuthenticationPrincipal AuthenticatedUser currentUser,
+        @RequestParam("file") MultipartFile file
+    ) {
+        User updated = userService.updateProfilePhoto(currentUser.getDomainUser().getId(), file);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(toResponse(updated));
+    }
+
     @DeleteMapping("/me")
     public ResponseEntity<Void> deleteUser(
         @AuthenticationPrincipal AuthenticatedUser currentUser
@@ -88,6 +102,12 @@ public class UserController {
         return ResponseEntity
                 .status(HttpStatus.NO_CONTENT)
                 .build();
+    }
+
+    private UserResponseDTO toResponse(User user) {
+        String photoUrl = userService.resolveProfilePhotoUrl(user);
+
+        return UserResponseDTO.fromDomain(user, photoUrl);
     }
 
 }
