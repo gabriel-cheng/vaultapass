@@ -48,7 +48,7 @@ public class UserController {
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(toResponse(user));
+                .body(userService.toResponse(user));
     }
 
     @GetMapping("/me")
@@ -58,7 +58,7 @@ public class UserController {
         User user = userService.findById(currentUser.getDomainUser().getId());
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(toResponse(user));
+                .body(userService.toResponse(user));
     }
 
     @PatchMapping("/me/email")
@@ -69,7 +69,7 @@ public class UserController {
         User updated = userService.updateEmail(currentUser.getDomainUser().getId(), request.email());
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(toResponse(updated));
+                .body(userService.toResponse(updated));
     }
 
     @PatchMapping("/me/password")
@@ -91,7 +91,7 @@ public class UserController {
         User updated = userService.updateProfilePhoto(currentUser.getDomainUser().getId(), file);
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(toResponse(updated));
+                .body(userService.toResponse(updated));
     }
 
     @DeleteMapping("/me")
@@ -102,12 +102,6 @@ public class UserController {
         return ResponseEntity
                 .status(HttpStatus.NO_CONTENT)
                 .build();
-    }
-
-    private UserResponseDTO toResponse(User user) {
-        String photoUrl = userService.resolveProfilePhotoUrl(user);
-
-        return UserResponseDTO.fromDomain(user, photoUrl);
     }
 
 }

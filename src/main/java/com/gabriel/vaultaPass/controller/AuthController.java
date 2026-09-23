@@ -19,12 +19,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.gabriel.vaultaPass.domain.user.User;
 import com.gabriel.vaultaPass.dto.request.LoginRequestDTO;
 import com.gabriel.vaultaPass.dto.response.UserResponseDTO;
 import com.gabriel.vaultaPass.exception.AuthenticationFailedException;
 import com.gabriel.vaultaPass.exception.ErrorMessageEnum;
 import com.gabriel.vaultaPass.infra.security.AuthenticatedUser;
 import com.gabriel.vaultaPass.infra.security.JwtUtil;
+import com.gabriel.vaultaPass.service.UserService;
 
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -36,24 +38,29 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
     private final UserDetailsService userDetailsService;
+    private final UserService userService;
 
     public AuthController(
         AuthenticationManager authenticationManager,
         JwtUtil jwtUtil,
-        UserDetailsService userDetailsService
+        UserDetailsService userDetailsService,
+        UserService userService
     ) {
         this.authenticationManager = authenticationManager;
         this.jwtUtil = jwtUtil;
         this.userDetailsService = userDetailsService;
+        this.userService = userService;
     }
 
     @GetMapping("/me")
     public ResponseEntity<UserResponseDTO> me(
         @AuthenticationPrincipal AuthenticatedUser currentUser
     ) {
+        User user = currentUser.getDomainUser();
+
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(UserResponseDTO.fromDomain(currentUser.getDomainUser()));
+                .body(userService.toResponse(user));
     }
 
     @PostMapping("/login")
@@ -83,10 +90,11 @@ public class AuthController {
         response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
 
         AuthenticatedUser authenticatedUser = (AuthenticatedUser) userDetails;
-        
+        User user = authenticatedUser.getDomainUser();
+
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(UserResponseDTO.fromDomain(authenticatedUser.getDomainUser()));
+                .body(userService.toResponse(user));
     }
 
     @PostMapping("/logout")

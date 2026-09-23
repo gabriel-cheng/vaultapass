@@ -11,6 +11,7 @@ import com.gabriel.vaultaPass.domain.user.FileStorage;
 import com.gabriel.vaultaPass.domain.user.PasswordEncoder;
 import com.gabriel.vaultaPass.domain.user.User;
 import com.gabriel.vaultaPass.domain.user.UserRepository;
+import com.gabriel.vaultaPass.dto.response.UserResponseDTO;
 import com.gabriel.vaultaPass.exception.AlreadyExistsException;
 import com.gabriel.vaultaPass.exception.ErrorMessageEnum;
 import com.gabriel.vaultaPass.exception.UserNotFoundException;
@@ -113,6 +114,12 @@ public class UserService {
         }
 
         return fileStorage.generatePresignedUrl(user.getProfilePhotoUrl(), Duration.ofMinutes(15));
+    }
+
+    public UserResponseDTO toResponse(User user) {
+        String photoUrl = resolveProfilePhotoUrl(user);
+
+        return UserResponseDTO.fromDomain(user, photoUrl);
     }
 
 }
