@@ -107,13 +107,9 @@ public class User {
     }
 
     private void validateProfilePhotoUrl(String profilePhotoUrl) {
-        if(profilePhotoUrl != null && !isValidUrl(profilePhotoUrl)) {
+        if(profilePhotoUrl != null && profilePhotoUrl.isBlank()) {
             throw new IllegalArgumentException(ErrorMessageEnum.INVALID_URL.getMessage());
         }
-    }
-
-    private boolean isValidUrl(String url) {
-        return url.startsWith("http://") || url.startsWith("https://");
     }
 
     public String getId() { return this.id; }
