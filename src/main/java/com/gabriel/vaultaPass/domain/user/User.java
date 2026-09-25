@@ -61,6 +61,21 @@ public class User {
         this.createdAt = createdAt;
     }
 
+    public void updateName(String newName) {
+        validateName(newName);
+        this.name = newName;
+    }
+
+    public void updateLastname(String newLastname) {
+        validateLastname(newLastname);
+        this.lastname = newLastname;
+    }
+
+    public void updateUsername(String newUsername) {
+        validateUsername(newUsername);
+        this.username = newUsername;
+    }
+
     public void updateEmail(String newEmail) {
         validateEmail(newEmail);
         this.email = newEmail;

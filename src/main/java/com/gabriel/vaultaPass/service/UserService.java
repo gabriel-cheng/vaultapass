@@ -56,6 +56,29 @@ public class UserService {
                 .orElseThrow(() -> new UserNotFoundException(ErrorMessageEnum.USER_NOT_FOUND.getMessage()));
     }
 
+    public User updateName(String userId, String newName) {
+        User user = findById(userId);
+        user.updateName(newName);
+        return userRepository.save(user);
+    }
+
+    public User updateLastname(String userId, String newLastname) {
+        User user = findById(userId);
+        user.updateLastname(newLastname);
+        return userRepository.save(user);
+    }
+
+    public User updateUsername(String userId, String newUsername) {
+        User user = findById(userId);
+
+        if(userRepository.existsByUsername(newUsername)) {
+            throw new AlreadyExistsException(ErrorMessageEnum.USERNAME_ALREADY_IN_USE.getMessage());
+        }
+
+        user.updateUsername(newUsername);
+        return userRepository.save(user);
+    }
+
     public User updateEmail(String userId, String newEmail) {
         User user = findById(userId);
 
