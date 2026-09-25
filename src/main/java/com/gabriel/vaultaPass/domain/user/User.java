@@ -15,6 +15,7 @@ public class User {
     private String password;
     private String profilePhotoUrl;
     private final LocalDateTime createdAt;
+    private LocalDateTime credentialsUpdatedAt;
 
     public User(
         String name,
@@ -39,6 +40,7 @@ public class User {
         this.password = password;
         this.profilePhotoUrl = profilePhotoUrl;
         this.createdAt = LocalDateTime.now();
+        this.credentialsUpdatedAt = LocalDateTime.now();
     }
 
     public User(
@@ -49,7 +51,8 @@ public class User {
         String email,
         String password,
         String profilePhotoUrl,
-        LocalDateTime createdAt
+        LocalDateTime createdAt,
+        LocalDateTime credentialsUpdatedAt
     ) {
         this.id = id;
         this.name = name;
@@ -59,6 +62,7 @@ public class User {
         this.password = password;
         this.profilePhotoUrl = profilePhotoUrl;
         this.createdAt = createdAt;
+        this.credentialsUpdatedAt = credentialsUpdatedAt;
     }
 
     public void updateName(String newName) {
@@ -74,6 +78,7 @@ public class User {
     public void updateUsername(String newUsername) {
         validateUsername(newUsername);
         this.username = newUsername;
+        this.credentialsUpdatedAt = LocalDateTime.now();
     }
 
     public void updateEmail(String newEmail) {
@@ -84,6 +89,7 @@ public class User {
     public void updatePassword(String newPassword) {
         validatePassword(newPassword);
         this.password = newPassword;
+        this.credentialsUpdatedAt = LocalDateTime.now();
     }
 
     public void updateProfilePhotoUrl(String newUrl) {
@@ -135,5 +141,6 @@ public class User {
     public String getPassword() { return this.password; }
     public String getProfilePhotoUrl() { return this.profilePhotoUrl; }
     public LocalDateTime getCreatedAt() { return this.createdAt; }
+    public LocalDateTime getCredentialsUpdatedAt() { return this.credentialsUpdatedAt; }
 
 }

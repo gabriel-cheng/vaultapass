@@ -1,7 +1,11 @@
 package com.gabriel.vaultaPass.controller;
 
+import java.time.Duration;
+
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -23,8 +27,10 @@ import com.gabriel.vaultaPass.dto.request.UpdateUsernameRequestDTO;
 import com.gabriel.vaultaPass.dto.request.UserRequestDTO;
 import com.gabriel.vaultaPass.dto.response.UserResponseDTO;
 import com.gabriel.vaultaPass.infra.security.AuthenticatedUser;
+import com.gabriel.vaultaPass.infra.security.JwtUtil;
 import com.gabriel.vaultaPass.service.UserService;
 
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 
 @RestController
@@ -32,9 +38,11 @@ import jakarta.validation.Valid;
 public class UserController {
 
     private final UserService userService;
+    private final JwtUtil jwtUtil;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, JwtUtil jwtUtil) {
         this.userService = userService;
+        this.jwtUtil = jwtUtil;
     }
 
     @PostMapping
@@ -102,7 +110,11 @@ public class UserController {
         @AuthenticationPrincipal AuthenticatedUser currentUser,
         @RequestBody @Valid UpdateEmailRequestDTO request
     ) {
-        User updated = userService.updateEmail(currentUser.getDomainUser().getId(), request.email());
+        User updated = userService.updateEmail(
+            currentUser.getDomainUser().getId(),
+            request.email(),
+            request.currentPassword()
+        );
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(userService.toResponse(updated));
@@ -111,13 +123,18 @@ public class UserController {
     @PutMapping("/me/password")
     public ResponseEntity<Void> updatePassword(
         @AuthenticationPrincipal AuthenticatedUser currentUser,
-        @RequestBody @Valid UpdatePasswordRequestDTO request
+        @RequestBody @Valid UpdatePasswordRequestDTO request,
+        HttpServletResponse response
     ) {
-        userService.updatePassword(currentUser.getDomainUser().getId(), request.password());
-        return ResponseEntity
-                .status(HttpStatus.NO_CONTENT)
-                .build();
-    }
+        User updated = userService.updatePassword(
+            currentUser.getDomainUser().getId(),
+            request.currentPassword(),
+            request.newPassword()
+        );
+
+        reissueCookie(updated, response);
+        return ResponseEntity.noContent().build();
+}
 
     @PutMapping(value = "/me/profile-photo", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<UserResponseDTO> updateProfilePhoto(
@@ -138,6 +155,20 @@ public class UserController {
         return ResponseEntity
                 .status(HttpStatus.NO_CONTENT)
                 .build();
+    }
+
+    private void reissueCookie(User user, HttpServletResponse response) {
+        String token = jwtUtil.generateToken(new AuthenticatedUser(user));
+
+        ResponseCookie cookie = ResponseCookie.from("auth_token", token)
+            .httpOnly(true)
+            .secure(true)
+            .path("/")
+            .maxAge(Duration.ofHours(10))
+            .sameSite("Strict")
+            .build();
+
+        response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
     }
 
 }

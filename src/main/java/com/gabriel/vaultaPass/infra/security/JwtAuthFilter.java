@@ -1,6 +1,8 @@
 package com.gabriel.vaultaPass.infra.security;
 
 import java.io.IOException;
+import java.time.Instant;
+import java.time.ZoneId;
 
 import org.jspecify.annotations.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -45,12 +47,16 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 String username = jwtUtil.extractUsername(token);
                 UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
-                if(jwtUtil.istokenValid(token, userDetails)) {
-                    UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                boolean structurallyValid = jwtUtil.isTokenValid(token, userDetails);
+                boolean issuedAfterLastCredentialChange = isIssuedAfterCredentialsChange(token, userDetails);
+
+                if(structurallyValid && issuedAfterLastCredentialChange) {
+                    UsernamePasswordAuthenticationToken authToken =
+                        new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                     authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(authToken);
                 }
-            }catch(Exception ex) {
+            } catch(Exception e) {
                 SecurityContextHolder.clearContext();
             }
         }
@@ -69,6 +75,20 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         }
 
         return null;
+    }
+
+    private boolean isIssuedAfterCredentialsChange(String token, UserDetails userDetails) {
+        if(!(userDetails instanceof AuthenticatedUser authenticatedUser)) {
+            return true;
+        }
+
+        Instant issuedAt = jwtUtil.extractIssuedAt(token);
+        Instant credentialsChangedAt = authenticatedUser.getDomainUser()
+            .getCredentialsUpdatedAt()
+            .atZone(ZoneId.systemDefault())
+            .toInstant();
+
+        return !issuedAt.isBefore(credentialsChangedAt);
     }
 
 }

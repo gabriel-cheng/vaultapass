@@ -7,5 +7,6 @@ public record UpdatePasswordRequestDTO(
     @NotBlank
     @Size(
         min = 8, message = "The password must be at least 8 characters long."
-    ) String password
+    ) String newPassword,
+    @NotBlank String currentPassword
 ) {}
