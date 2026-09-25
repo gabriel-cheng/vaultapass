@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.time.Duration;
 import java.util.List;
 
-import org.flywaydb.core.api.ErrorCode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -14,10 +13,10 @@ import com.gabriel.vaultaPass.domain.user.User;
 import com.gabriel.vaultaPass.domain.user.UserRepository;
 import com.gabriel.vaultaPass.dto.response.UserResponseDTO;
 import com.gabriel.vaultaPass.exception.AlreadyExistsException;
+import com.gabriel.vaultaPass.exception.CurrentPasswordException;
 import com.gabriel.vaultaPass.exception.ErrorMessageEnum;
 import com.gabriel.vaultaPass.exception.UserNotFoundException;
 
-import jakarta.validation.ValidationException;
 
 @Service 
 public class UserService {
@@ -147,7 +146,7 @@ public class UserService {
 
     private void verifyCurrentPassword(User user, String currentPassword) {
         if(!passwordEncoder.matches(currentPassword, user.getPassword())) {
-            throw new ValidationException(ErrorMessageEnum.INVALID_CURRENT_PASSWORD.getMessage());
+            throw new CurrentPasswordException(ErrorMessageEnum.INVALID_CURRENT_PASSWORD.getMessage());
         }
     }
 

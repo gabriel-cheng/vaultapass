@@ -64,4 +64,11 @@ public class GlobalExceptionHandler {
                 .body(ex.getMessage());
     }
 
+    @ExceptionHandler(CurrentPasswordException.class)
+    public ResponseEntity<String> handleCurrentPassword(CurrentPasswordException ex) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(ex.getMessage());
+    }
+
 }
