@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.time.Duration;
 import java.util.List;
 
+import org.flywaydb.core.api.ErrorCode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -15,6 +16,8 @@ import com.gabriel.vaultaPass.dto.response.UserResponseDTO;
 import com.gabriel.vaultaPass.exception.AlreadyExistsException;
 import com.gabriel.vaultaPass.exception.ErrorMessageEnum;
 import com.gabriel.vaultaPass.exception.UserNotFoundException;
+
+import jakarta.validation.ValidationException;
 
 @Service 
 public class UserService {
@@ -56,10 +59,34 @@ public class UserService {
                 .orElseThrow(() -> new UserNotFoundException(ErrorMessageEnum.USER_NOT_FOUND.getMessage()));
     }
 
-    public User updateEmail(String userId, String newEmail) {
+    public User updateName(String userId, String newName) {
+        User user = findById(userId);
+        user.updateName(newName);
+        return userRepository.save(user);
+    }
+
+    public User updateLastname(String userId, String newLastname) {
+        User user = findById(userId);
+        user.updateLastname(newLastname);
+        return userRepository.save(user);
+    }
+
+    public User updateUsername(String userId, String newUsername) {
         User user = findById(userId);
 
-        if(userRepository.existsByEmail(newEmail)) {
+        if(userRepository.existsByUsername(newUsername)) {
+            throw new AlreadyExistsException(ErrorMessageEnum.USERNAME_ALREADY_IN_USE.getMessage());
+        }
+
+        user.updateUsername(newUsername);
+        return userRepository.save(user);
+    }
+
+    public User updateEmail(String userId, String newEmail, String currentPassword) {
+        User user = findById(userId);
+        verifyCurrentPassword(user, currentPassword);
+
+        if (userRepository.existsByEmail(newEmail)) {
             throw new AlreadyExistsException(ErrorMessageEnum.EMAIL_ALREADY_IN_USE.getMessage());
         }
 
@@ -67,9 +94,11 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public User updatePassword(String userId, String rawNewPassword) {
+    public User updatePassword(String userId, String currentPassword, String newPassword) {
         User user = findById(userId);
-        user.updatePassword(passwordEncoder.encode(rawNewPassword));
+        verifyCurrentPassword(user, currentPassword);
+
+        user.updatePassword(passwordEncoder.encode(newPassword));
         return userRepository.save(user);
     }
 
@@ -114,6 +143,12 @@ public class UserService {
         }
 
         return fileStorage.generatePresignedUrl(user.getProfilePhotoUrl(), Duration.ofMinutes(15));
+    }
+
+    private void verifyCurrentPassword(User user, String currentPassword) {
+        if(!passwordEncoder.matches(currentPassword, user.getPassword())) {
+            throw new ValidationException(ErrorMessageEnum.INVALID_CURRENT_PASSWORD.getMessage());
+        }
     }
 
     public UserResponseDTO toResponse(User user) {

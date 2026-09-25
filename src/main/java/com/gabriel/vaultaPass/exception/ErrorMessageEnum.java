@@ -7,6 +7,7 @@ public enum ErrorMessageEnum {
     LAST_NAME_IS_REQUIRED("The last name is required."),
     USERNAME_IS_REQUIRED("The username is required."),
     EMAIL_ALREADY_IN_USE("Email address already in use. Please provide another one."),
+    INVALID_CURRENT_PASSWORD("Current password is incorrect."),
     USERNAME_ALREADY_IN_USE("Username already in use. Please provide another one."),
     INVALID_EMAIL("The email address provided is invalid. Please try another one."),
     INVALID_FILE_TYPE("Invalid file type. Only JPEG, JPG, PNG, and WEBP files are allowed."),

@@ -1,5 +1,6 @@
 package com.gabriel.vaultaPass.infra.security;
 
+import java.time.Instant;
 import java.util.Base64;
 import java.util.Date;
 
@@ -43,7 +44,7 @@ public class JwtUtil {
         return extractClaims(token).getSubject();
     }
 
-    public boolean istokenValid(String token, UserDetails userDetails) {
+    public boolean isTokenValid(String token, UserDetails userDetails) {
         try {
             String username = extractUsername(token);
             return username.equals(userDetails.getUsername()) && !isExpired(token);
@@ -62,6 +63,10 @@ public class JwtUtil {
             .build()
             .parseSignedClaims(token)
             .getPayload();
+    }
+
+    public Instant extractIssuedAt(String token) {
+        return extractClaims(token).getIssuedAt().toInstant();
     }
 
 }

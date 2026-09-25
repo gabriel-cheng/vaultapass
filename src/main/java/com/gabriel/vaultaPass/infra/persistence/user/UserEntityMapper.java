@@ -14,7 +14,8 @@ public class UserEntityMapper {
             entity.getEmail(),
             entity.getPassword(),
             entity.getProfilePhotoUrl(),
-            entity.getCreatedAt()
+            entity.getCreatedAt(),
+            entity.getCredentialsUpdatedAt()
         );
 
     }
@@ -29,7 +30,8 @@ public class UserEntityMapper {
             user.getEmail(),
             user.getPassword(),
             user.getProfilePhotoUrl(),
-            user.getCreatedAt()
+            user.getCreatedAt(),
+            user.getCredentialsUpdatedAt()
         );
 
     }

@@ -20,6 +20,7 @@ public class UserEntity {
     private String username;
     private String email;
     private String password;
+    private LocalDateTime credentialsUpdatedAt;
 
     @Column(name = "profile_photo_url")
     private String profilePhotoUrl;
@@ -37,7 +38,8 @@ public class UserEntity {
         String email,
         String password,
         String profilePhotoUrl,
-        LocalDateTime createdAt
+        LocalDateTime createdAt,
+        LocalDateTime credentialsUpdatedAt
     ) {
         this.id = id;
         this.name = name;
@@ -47,6 +49,7 @@ public class UserEntity {
         this.password = password;
         this.profilePhotoUrl = profilePhotoUrl;
         this.createdAt = createdAt;
+        this.credentialsUpdatedAt = credentialsUpdatedAt;
     }
 
     public String getId() { return id; }
@@ -57,5 +60,6 @@ public class UserEntity {
     public String getPassword() { return password; }
     public String getProfilePhotoUrl() { return profilePhotoUrl; }
     public LocalDateTime getCreatedAt() { return createdAt; }
+    public LocalDateTime getCredentialsUpdatedAt() { return credentialsUpdatedAt; }
 
 }
