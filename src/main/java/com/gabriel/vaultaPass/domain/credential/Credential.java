@@ -21,16 +21,16 @@ public class Credential {
         String userId,
         String platformName,
         String login,
-        String email,
         String password,
+        String email,
         String link,
         String description
     ) {
         validateUserId(userId);
         validatePlatformName(platformName);
         validateLogin(login);
-        validateEmail(email);
         validatePassword(password);
+        validateEmail(email);
         validateLink(link);
         
         this.id = UUID.randomUUID().toString();
@@ -38,6 +38,7 @@ public class Credential {
         this.platformName = platformName;
         this.login = login;
         this.password = password;
+        this.email = email;
         this.link = link;
         this.description = description;
         this.createdAt = LocalDateTime.now();
@@ -48,8 +49,8 @@ public class Credential {
         String userId,
         String platformName,
         String login,
-        String email,
         String password,
+        String email,
         String link,
         String description,
         LocalDateTime createdAt
@@ -58,8 +59,8 @@ public class Credential {
         this.userId = userId;
         this.platformName = platformName;
         this.login = login;
-        this.email = email;
         this.password = password;
+        this.email = email;
         this.link = link;
         this.description = description;
         this.createdAt = createdAt;

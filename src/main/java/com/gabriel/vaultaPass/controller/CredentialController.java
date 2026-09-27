@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.gabriel.vaultaPass.domain.credential.Credential;
 import com.gabriel.vaultaPass.dto.request.CredentialRequestDTO;
 import com.gabriel.vaultaPass.dto.request.CredentialUpdateRequestDTO;
-import com.gabriel.vaultaPass.dto.request.UpdateEmailRequestDTO;
 import com.gabriel.vaultaPass.dto.response.CredentialResponseDTO;
 import com.gabriel.vaultaPass.dto.response.RevealedPasswordResponseDTO;
 import com.gabriel.vaultaPass.infra.security.AuthenticatedUser;
