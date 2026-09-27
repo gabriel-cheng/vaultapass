@@ -19,12 +19,12 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.gabriel.vaultaPass.domain.user.User;
-import com.gabriel.vaultaPass.dto.request.UpdateEmailRequestDTO;
-import com.gabriel.vaultaPass.dto.request.UpdateLastnameRequestDTO;
-import com.gabriel.vaultaPass.dto.request.UpdateNameRequestDTO;
-import com.gabriel.vaultaPass.dto.request.UpdatePasswordRequestDTO;
-import com.gabriel.vaultaPass.dto.request.UpdateUsernameRequestDTO;
-import com.gabriel.vaultaPass.dto.request.UserRequestDTO;
+import com.gabriel.vaultaPass.dto.request.user.UpdateUserEmailRequestDTO;
+import com.gabriel.vaultaPass.dto.request.user.UpdateUserLastnameRequestDTO;
+import com.gabriel.vaultaPass.dto.request.user.UpdateNameRequestDTO;
+import com.gabriel.vaultaPass.dto.request.user.UpdateUserPasswordRequestDTO;
+import com.gabriel.vaultaPass.dto.request.user.UpdateUsernameRequestDTO;
+import com.gabriel.vaultaPass.dto.request.user.UserRequestDTO;
 import com.gabriel.vaultaPass.dto.response.UserResponseDTO;
 import com.gabriel.vaultaPass.infra.security.AuthenticatedUser;
 import com.gabriel.vaultaPass.infra.security.JwtUtil;
@@ -86,7 +86,7 @@ public class UserController {
     @PutMapping("/me/lastname")
     public ResponseEntity<UserResponseDTO> updateLastname(
         @AuthenticationPrincipal AuthenticatedUser currentUser,
-        @RequestBody @Valid UpdateLastnameRequestDTO request
+        @RequestBody @Valid UpdateUserLastnameRequestDTO request
     ) {
         User updated = userService.updateLastname(currentUser.getDomainUser().getId(), request.lastname());
         return ResponseEntity
@@ -108,7 +108,7 @@ public class UserController {
     @PutMapping("/me/email")
     public ResponseEntity<UserResponseDTO> updateEmail(
         @AuthenticationPrincipal AuthenticatedUser currentUser,
-        @RequestBody @Valid UpdateEmailRequestDTO request
+        @RequestBody @Valid UpdateUserEmailRequestDTO request
     ) {
         User updated = userService.updateEmail(
             currentUser.getDomainUser().getId(),
@@ -123,7 +123,7 @@ public class UserController {
     @PutMapping("/me/password")
     public ResponseEntity<Void> updatePassword(
         @AuthenticationPrincipal AuthenticatedUser currentUser,
-        @RequestBody @Valid UpdatePasswordRequestDTO request,
+        @RequestBody @Valid UpdateUserPasswordRequestDTO request,
         HttpServletResponse response
     ) {
         User updated = userService.updatePassword(

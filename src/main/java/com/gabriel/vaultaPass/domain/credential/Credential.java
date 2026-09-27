@@ -66,19 +66,19 @@ public class Credential {
         this.createdAt = createdAt;
     }
 
-    public void updatePassword(String newPassword) {
-        validatePassword(newPassword);
-        this.password = newPassword;
+    public void updatePlatformName(String newPlatformName) {
+        validatePlatformName(newPlatformName);
+        this.platformName = newPlatformName;
     }
-
+    
     public void updateLogin(String newLogin) {
         validateLogin(newLogin);
         this.login = newLogin;
     }
 
-    public void updateLink(String newLink) {
-        validateLink(newLink);
-        this.link = newLink;
+    public void updatePassword(String newPassword) {
+        validatePassword(newPassword);
+        this.password = newPassword;
     }
 
     public void updateEmail(String newEmail) {
@@ -86,8 +86,13 @@ public class Credential {
         this.email = newEmail;
     }
 
-    public void updateDescription(String description) {
-        this.description = description;
+    public void updateLink(String newLink) {
+        validateLink(newLink);
+        this.link = newLink;
+    }
+
+    public void updateDescription(String newDescription) {
+        this.description = newDescription;
     }
 
     private void validateUserId(String userId) {

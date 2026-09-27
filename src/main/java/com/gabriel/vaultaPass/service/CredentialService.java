@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.gabriel.vaultaPass.domain.credential.Credential;
+import com.gabriel.vaultaPass.domain.credential.CredentialEncryptor;
 import com.gabriel.vaultaPass.domain.credential.CredentialRepository;
 import com.gabriel.vaultaPass.domain.user.UserRepository;
 import com.gabriel.vaultaPass.exception.CredentialNotFoundException;
@@ -17,10 +18,16 @@ public class CredentialService {
 
     private final CredentialRepository credentialRepository;
     private final UserRepository userRepository;
+    private final CredentialEncryptor encryptor;
 
-    public CredentialService(CredentialRepository credentialRepository, UserRepository userRepository) {
+    public CredentialService(
+        CredentialRepository credentialRepository,
+        UserRepository userRepository,
+        CredentialEncryptor encryptor
+    ) {
         this.credentialRepository = credentialRepository;
         this.userRepository = userRepository;
+        this.encryptor = encryptor;
     }
 
     public Credential register(
@@ -56,33 +63,39 @@ public class CredentialService {
         return findByIdAndUser(credentialId, userId).getPassword();
     }
 
-    public Credential update(
-        String credentialId,
-        String userId,
-        String login,
-        String password,
-        String email,
-        String link,
-        String description
-    ) {
+    public Credential updatePlatformName(String credentialId, String userId, String newPlatformName) {
         Credential credential = findByIdAndUser(credentialId, userId);
+        credential.updatePlatformName(newPlatformName);
+        return credentialRepository.save(credential);
+    }
 
-        if(login != null) {
-            credential.updateLogin(login);
-        }
-        if(password != null) {
-            credential.updatePassword(password);
-        }
-        if(email != null) {
-            credential.updateEmail(email);
-        }
-        if(link != null) {
-            credential.updateLink(link);
-        }
-        if(description != null) {
-            credential.updateDescription(description);
-        }
+    public Credential updateLogin(String credentialId, String userId, String newLogin) {
+        Credential credential = findByIdAndUser(credentialId, userId);
+        credential.updateLogin(newLogin);
+        return credentialRepository.save(credential);
+    }
 
+    public Credential updatePassword(String credentialId, String userId, String rawNewPassword) {
+        Credential credential = findByIdAndUser(credentialId, userId);
+        credential.updatePassword(encryptor.encrypt(rawNewPassword));
+        return credentialRepository.save(credential);
+    }
+
+    public Credential updateEmail(String credentialId, String userId, String newEmail) {
+        Credential credential = findByIdAndUser(credentialId, userId);
+        credential.updateEmail(newEmail);
+        return credentialRepository.save(credential);
+    }
+
+    public Credential updateLink(String credentialId, String userId, String newLink) {
+        Credential credential = findByIdAndUser(credentialId, userId);
+        credential.updateLink(newLink);
+        return credentialRepository.save(credential);
+    }
+
+    public Credential updateDescription(String credentialId, String userId, String newDescription) {
+        Credential credential = findByIdAndUser(credentialId, userId);
+        credential.updateDescription(newDescription);
         return credentialRepository.save(credential);
     }
 

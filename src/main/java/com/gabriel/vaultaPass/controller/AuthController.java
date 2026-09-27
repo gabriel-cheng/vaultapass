@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.gabriel.vaultaPass.domain.user.User;
-import com.gabriel.vaultaPass.dto.request.LoginRequestDTO;
+import com.gabriel.vaultaPass.dto.request.auth.LoginRequestDTO;
 import com.gabriel.vaultaPass.dto.response.UserResponseDTO;
 import com.gabriel.vaultaPass.exception.AuthenticationFailedException;
 import com.gabriel.vaultaPass.exception.ErrorMessageEnum;

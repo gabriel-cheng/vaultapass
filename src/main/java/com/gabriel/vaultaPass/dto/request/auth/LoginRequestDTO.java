@@ -1,4 +1,4 @@
-package com.gabriel.vaultaPass.dto.request;
+package com.gabriel.vaultaPass.dto.request.auth;
 
 import jakarta.validation.constraints.NotBlank;
 

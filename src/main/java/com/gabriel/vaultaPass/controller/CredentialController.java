@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,8 +15,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.gabriel.vaultaPass.domain.credential.Credential;
-import com.gabriel.vaultaPass.dto.request.CredentialRequestDTO;
-import com.gabriel.vaultaPass.dto.request.CredentialUpdateRequestDTO;
+import com.gabriel.vaultaPass.dto.request.credential.CredentialRequestDTO;
+import com.gabriel.vaultaPass.dto.request.credential.UpdateCredentialDescriptionRequestDTO;
+import com.gabriel.vaultaPass.dto.request.credential.UpdateCredentialEmailRequestDTO;
+import com.gabriel.vaultaPass.dto.request.credential.UpdateCredentialLinkRequestDTO;
+import com.gabriel.vaultaPass.dto.request.credential.UpdateCredentialLoginRequestDTO;
+import com.gabriel.vaultaPass.dto.request.credential.UpdateCredentialPasswordRequestDTO;
+import com.gabriel.vaultaPass.dto.request.credential.UpdateCredentialPlatformNameRequestDTO;
 import com.gabriel.vaultaPass.dto.response.CredentialResponseDTO;
 import com.gabriel.vaultaPass.dto.response.RevealedPasswordResponseDTO;
 import com.gabriel.vaultaPass.infra.security.AuthenticatedUser;
@@ -92,22 +97,85 @@ public class CredentialController {
                 .body(new RevealedPasswordResponseDTO(password));
     }
 
-    @PatchMapping("/{id}")
-    public ResponseEntity<CredentialResponseDTO> updateCredential(
+    @PutMapping("/{id}/platform-name")
+    public ResponseEntity<CredentialResponseDTO> updatePlatformName(
+        @AuthenticationPrincipal  AuthenticatedUser currentUser,
+        @PathVariable String id,
+        @RequestBody @Valid UpdateCredentialPlatformNameRequestDTO request
+    ) {
+        Credential updated = credentialService.updatePlatformName(
+            id, currentUser.getDomainUser().getId(), request.platformName()
+        );
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(CredentialResponseDTO.fromDomain(updated));
+    }
+
+    @PutMapping("/{id}/login")
+    public ResponseEntity<CredentialResponseDTO> updateLogin(
         @AuthenticationPrincipal AuthenticatedUser currentUser,
         @PathVariable String id,
-        @RequestBody CredentialUpdateRequestDTO request
+        @RequestBody @Valid UpdateCredentialLoginRequestDTO request
     ) {
-        Credential updated = credentialService.update(
-            id,
-            currentUser.getDomainUser().getId(),
-            request.login(),
-            request.password(),
-            request.email(),
-            request.link(),
-            request.description()
+        Credential updated = credentialService.updateLogin(
+            id, currentUser.getDomainUser().getId(), request.login()
         );
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(CredentialResponseDTO.fromDomain(updated));
+    }
 
+    @PutMapping("/{id}/password")
+    public ResponseEntity<CredentialResponseDTO> updatePassword(
+        @AuthenticationPrincipal AuthenticatedUser currentUser,
+        @PathVariable String id,
+        @RequestBody @Valid UpdateCredentialPasswordRequestDTO request
+    ) {
+        Credential updated = credentialService.updatePassword(
+            id, currentUser.getDomainUser().getId(), request.password()
+        );
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(CredentialResponseDTO.fromDomain(updated));
+    }
+
+    @PutMapping("/{id}/email")
+    public ResponseEntity<CredentialResponseDTO> updateEmail(
+        @AuthenticationPrincipal AuthenticatedUser currentUser,
+        @PathVariable String id,
+        @RequestBody @Valid UpdateCredentialEmailRequestDTO request
+    ) {
+        Credential updated = credentialService.updateEmail(
+            id, currentUser.getDomainUser().getId(), request.email()
+        );
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(CredentialResponseDTO.fromDomain(updated));
+    }
+
+    @PutMapping("/{id}/link")
+    public ResponseEntity<CredentialResponseDTO> updateLink(
+        @AuthenticationPrincipal AuthenticatedUser currentUser,
+        @PathVariable String id,
+        @RequestBody @Valid UpdateCredentialLinkRequestDTO request
+    ) {
+        Credential updated = credentialService.updateLink(
+            id, currentUser.getDomainUser().getId(), request.link()
+        );
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(CredentialResponseDTO.fromDomain(updated));
+    }
+
+    @PutMapping("/{id}/description")
+    public ResponseEntity<CredentialResponseDTO> updateDescription(
+        @AuthenticationPrincipal AuthenticatedUser currentUser,
+        @PathVariable String id,
+        @RequestBody @Valid UpdateCredentialDescriptionRequestDTO request
+    ) {
+        Credential updated = credentialService.updateDescription(
+            id, currentUser.getDomainUser().getId(), request.description()
+        );
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(CredentialResponseDTO.fromDomain(updated));
