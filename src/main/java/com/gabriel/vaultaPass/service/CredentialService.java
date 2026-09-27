@@ -18,16 +18,13 @@ public class CredentialService {
 
     private final CredentialRepository credentialRepository;
     private final UserRepository userRepository;
-    private final CredentialEncryptor encryptor;
 
     public CredentialService(
         CredentialRepository credentialRepository,
-        UserRepository userRepository,
-        CredentialEncryptor encryptor
+        UserRepository userRepository
     ) {
         this.credentialRepository = credentialRepository;
         this.userRepository = userRepository;
-        this.encryptor = encryptor;
     }
 
     public Credential register(
@@ -60,7 +57,8 @@ public class CredentialService {
     }
 
     public String revealPassword(String credentialId, String userId) {
-        return findByIdAndUser(credentialId, userId).getPassword();
+        Credential credential = findByIdAndUser(credentialId, userId);
+        return credential.getPassword();
     }
 
     public Credential updatePlatformName(String credentialId, String userId, String newPlatformName) {
@@ -77,7 +75,7 @@ public class CredentialService {
 
     public Credential updatePassword(String credentialId, String userId, String rawNewPassword) {
         Credential credential = findByIdAndUser(credentialId, userId);
-        credential.updatePassword(encryptor.encrypt(rawNewPassword));
+        credential.updatePassword(rawNewPassword);
         return credentialRepository.save(credential);
     }
 
