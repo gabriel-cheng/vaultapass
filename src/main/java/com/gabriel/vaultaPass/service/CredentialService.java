@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.gabriel.vaultaPass.domain.credential.Credential;
-import com.gabriel.vaultaPass.domain.credential.CredentialEncryptor;
 import com.gabriel.vaultaPass.domain.credential.CredentialRepository;
 import com.gabriel.vaultaPass.domain.user.UserRepository;
 import com.gabriel.vaultaPass.exception.CredentialNotFoundException;
