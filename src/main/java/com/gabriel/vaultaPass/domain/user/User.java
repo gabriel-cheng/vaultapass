@@ -101,17 +101,26 @@ public class User {
         if(name == null || name.isBlank()) {
             throw new IllegalArgumentException(ErrorMessageEnum.NAME_IS_REQUIRED.getMessage());
         }
+        if(name.length() < 2) {
+            throw new IllegalArgumentException(ErrorMessageEnum.NAME_TOO_SHORT.getMessage());
+        }
     }
 
     private void validateLastname(String lastname) {
         if(lastname == null || lastname.isBlank()) {
             throw new IllegalArgumentException(ErrorMessageEnum.LAST_NAME_IS_REQUIRED.getMessage());
         }
+        if(lastname.length() < 2) {
+            throw new IllegalArgumentException(ErrorMessageEnum.LASTNAME_TOO_SHORT.getMessage());
+        }
     }
 
     private void validateUsername(String username) {
         if(username == null || username.isBlank()) {
             throw new IllegalArgumentException(ErrorMessageEnum.USERNAME_IS_REQUIRED.getMessage());
+        }
+        if(username.length() < 3) {
+            throw new IllegalArgumentException(ErrorMessageEnum.USERNAME_TOO_SHORT.getMessage());
         }
     }
 
@@ -124,6 +133,9 @@ public class User {
     private void validatePassword(String password) {
         if(password == null || password.isBlank()) {
             throw new IllegalArgumentException(ErrorMessageEnum.PASSWORD_IS_REQUIRED.getMessage());
+        }
+        if(password.length() < 8) {
+            throw new IllegalArgumentException(ErrorMessageEnum.PASSWORD_TOO_SHORT.getMessage());
         }
     }
 
