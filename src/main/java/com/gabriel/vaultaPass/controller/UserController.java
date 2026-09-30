@@ -2,6 +2,7 @@ package com.gabriel.vaultaPass.controller;
 
 import java.time.Duration;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -39,6 +40,9 @@ public class UserController {
 
     private final UserService userService;
     private final JwtUtil jwtUtil;
+    
+    @Value("${app.cookie.secure:true}")
+    private boolean cookieSecure;
 
     public UserController(UserService userService, JwtUtil jwtUtil) {
         this.userService = userService;
@@ -162,7 +166,7 @@ public class UserController {
 
         ResponseCookie cookie = ResponseCookie.from("auth_token", token)
             .httpOnly(true)
-            .secure(true)
+            .secure(cookieSecure)
             .path("/")
             .maxAge(Duration.ofHours(10))
             .sameSite("Strict")
